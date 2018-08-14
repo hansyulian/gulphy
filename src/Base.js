@@ -1,4 +1,7 @@
-const path = require('path');
+<< << << < HEAD
+const path = require('path'); ===
+=== = >>>
+>>> > development
 const concat = require("gulp-concat");
 const tasker = require("./utils/tasker");
 const plumber = require("gulp-plumber");
@@ -79,19 +82,21 @@ class Base {
     }
 
 
-    get filePaths() {
-        var files = this.files;
-        var sourcePath = this.sourcePath;
-        var result = [];
-        for (var i in files)
-            result.push("./" + path.join(sourcePath, files[i]));
-        return result;
-    }
+    // get filePaths() {
+    //     var files = this.files;
+    //     var sourcePath = this.sourcePath;
+    //     var result = [];
+    //     for (var i in files)
+    //         result.push("./" + path.join(sourcePath, files[i]));
+    //     return result;
+    // }
 
     get gulpPipeline() {
         var pipeline = this.pipeline;
         var pipes = this.constructor.pipes;
-        var gulpInstance = gulp.src(this.filePaths);
+        var gulpInstance = gulp.src(this.files, {
+            cwd: this.sourcePath
+        });
         gulpInstance = gulpInstance.pipe(plumber());
         for (var i in pipeline) {
             var pipeName = pipeline[i];
@@ -128,7 +133,9 @@ class Base {
         var runName = "run:" + name;
         var watchName = "watch:" + name;
         var run = thisGulp.task(runName, () => this.gulpPipeline);
-        var watch = thisGulp.task(watchName, () => thisGulp.watch(this.filePaths, [runName]));
+        var watch = thisGulp.task(watchName, () => thisGulp.watch(this.files, gulp.parallel([runName])), {
+            cwd: this.sourcePath
+        }, );
         tasker.runs.push({
             name: runName,
             instance: run
