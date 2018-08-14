@@ -17,11 +17,14 @@ class JS extends Base {
     //#region getter
 
     get fileName() {
-        return this.name() + ".js";
+        return this.name + ".js";
     }
 
     get compiler() {
         return this.settings.compiler || "none";
+    }
+    get taskName() {
+        return "js:" + this.name
     }
     //#endregion
 }

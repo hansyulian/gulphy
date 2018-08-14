@@ -1,5 +1,3 @@
-const gulp = require("gulp");
-
 var runs = [];
 var watches = [];
 
@@ -23,15 +21,15 @@ function runAndWatchNames() {
 }
 
 function registerRun(name) {
-    gulp.task(name, runNames());
+    gulp.task(name, gulp.parallel(runNames()));
 }
 
 function registerWatch(name) {
-    gulp.task(name, watchNames());
+    gulp.task(name, gulp.parallel(watchNames()));
 }
 
 function registerRunAndWatch(name) {
-    gulp.task(name, runAndWatchNames());
+    gulp.task(name, gulp.parallel(runAndWatchNames()));
 }
 
 var tasker = {
