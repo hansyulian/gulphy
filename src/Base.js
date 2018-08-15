@@ -1,7 +1,4 @@
-<< << << < HEAD
-const path = require('path'); ===
-=== = >>>
->>> > development
+const path = require('path');
 const concat = require("gulp-concat");
 const tasker = require("./utils/tasker");
 const plumber = require("gulp-plumber");
