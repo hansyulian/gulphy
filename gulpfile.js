@@ -3,7 +3,8 @@ var GulphyBase = gulphy.Base;
 
 var test = new GulphyBase({
     name: "gulphyTest1",
-    files: ["tests/test1/**/*"],
+    files: ["test1/**/*"],
+    sourcePath: "tests",
     destination: "./test-result"
 });
 var test2 = new GulphyBase({

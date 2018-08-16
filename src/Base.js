@@ -125,14 +125,14 @@ class Base {
         return this;
     }
 
-    register(name, thisGulp) {
-        thisGulp = thisGulp || gulp;
+    register(name) {
         var runName = "run:" + name;
         var watchName = "watch:" + name;
-        var run = thisGulp.task(runName, () => this.gulpPipeline);
-        var watch = thisGulp.task(watchName, () => thisGulp.watch(this.files, gulp.parallel([runName])), {
-            cwd: this.sourcePath
-        }, );
+        var run = gulp.task(runName, () => this.gulpPipeline);
+        var watch = gulp.task(watchName, () => gulp.watch(this.files, {
+                cwd: this.sourcePath
+            },
+            gulp.parallel([runName])));
         tasker.runs.push({
             name: runName,
             instance: run

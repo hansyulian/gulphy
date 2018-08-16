@@ -1,2 +1,5 @@
+0.1.2:
+- fixed watch not working
+
 0.1.0:
 - initial version
