@@ -8,7 +8,7 @@ class Base {
     //#region static
     static get pipes() {
         var compilers = this.compilers || {};
-        var minify = this.minify || function () {};
+        var minify = this.minify || function () { };
         return {
             concat: function (context) {
                 return concat(context.fileName)
@@ -56,6 +56,10 @@ class Base {
 
     get fileName() {
         return this.name || "default";
+    }
+
+    get watchFiles() {
+        return this.settings.watchFiles || [];
     }
 
     get name() {
@@ -129,9 +133,11 @@ class Base {
         var runName = "run:" + name;
         var watchName = "watch:" + name;
         var run = gulp.task(runName, () => this.gulpPipeline);
-        var watch = gulp.task(watchName, () => gulp.watch(this.files, {
-                cwd: this.sourcePath
-            },
+        var watchFiles = [];
+        watchFiles = this.files.concat(this.watchFiles);
+        var watch = gulp.task(watchName, () => gulp.watch(watchFiles, {
+            cwd: this.sourcePath
+        },
             gulp.parallel([runName])));
         tasker.runs.push({
             name: runName,
