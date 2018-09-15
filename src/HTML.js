@@ -9,7 +9,6 @@ class HTML extends Base {
     static get compilers() {
         return {
             handlebars: function (context) {
-                console.log("here");
                 return handlebars(context.settings.data || {}, context.settings.handlebars || {})
             }
         }
