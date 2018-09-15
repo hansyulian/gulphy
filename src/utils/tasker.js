@@ -20,16 +20,16 @@ function runAndWatchNames() {
     return runNames().concat(watchNames());
 }
 
-function registerRun(name) {
-    gulp.task(name, gulp.parallel(runNames()));
+function registerRun(name, taskNames) {
+    gulp.task(name, gulp.parallel(taskNames || runNames()));
 }
 
-function registerWatch(name) {
-    gulp.task(name, gulp.parallel(watchNames()));
+function registerWatch(name, taskNames) {
+    gulp.task(name, gulp.parallel(taskNames || watchNames()));
 }
 
-function registerRunAndWatch(name) {
-    gulp.task(name, gulp.parallel(runAndWatchNames()));
+function registerRunAndWatch(name, taskNames) {
+    gulp.task(name, gulp.parallel(taskNames || runAndWatchNames()));
 }
 
 var tasker = {

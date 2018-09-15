@@ -11,6 +11,16 @@ var test2 = new GulphyBase({
     name: "gulphyTest2",
     files: ["tests/test1/file1"],
     destination: "./test-result"
+});
+var test3 = gulphy.html({
+    name: "hb-test",
+    files: ["test-hb/**/*.hbs"],
+    sourcePath: "tests",
+    destination: "test-result",
+    compiler: "handlebars",
+    data: {
+        text: "Hello Gulphy"
+    }
 })
 gulphy.registerRun("default");
 gulphy.registerWatch("watch");

@@ -1,10 +1,19 @@
 const Base = require("./Base");
+const handlebars = require("gulp-compile-handlebars");
 
 class HTML extends Base {
 
 
     //#region static
 
+    static get compilers() {
+        return {
+            handlebars: function (context) {
+                console.log("here");
+                return handlebars(context.settings.data || {}, context.settings.handlebars || {})
+            }
+        }
+    }
 
     //#endregion
     constructor(settings) {
