@@ -2,6 +2,7 @@ const path = require('path');
 const concat = require("gulp-concat");
 const tasker = require("./utils/tasker");
 const plumber = require("gulp-plumber");
+const rename = require("gulp-rename");
 
 class Base {
 
@@ -18,6 +19,17 @@ class Base {
                 if (!compiler)
                     return null;
                 return compiler(context);
+            },
+            changeName: function (context) {
+                return rename(context.fileName);
+            },
+            changeExtension: function (context) {
+                var extensionName = context.extensionName;
+                if (!extensionName)
+                    return null;
+                return rename({
+                    extname: extensionName
+                })
             },
             minify: function (context) {
                 return minify(context);
@@ -36,10 +48,13 @@ class Base {
         }
     }
 
+
     static get defaultPipeline() {
         return [
             "concat",
             "compile",
+            "changeName",
+            "changeExtension"
         ]
     }
 
@@ -81,16 +96,9 @@ class Base {
     get pipeline() {
         return this.settings.pipeline || Base.defaultPipeline;
     }
-
-
-    // get filePaths() {
-    //     var files = this.files;
-    //     var sourcePath = this.sourcePath;
-    //     var result = [];
-    //     for (var i in files)
-    //         result.push("./" + path.join(sourcePath, files[i]));
-    //     return result;
-    // }
+    get extensionName() {
+        return null;
+    }
 
     get gulpPipeline() {
         var pipeline = this.pipeline;

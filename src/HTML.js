@@ -14,6 +14,9 @@ class HTML extends Base {
         }
     }
 
+
+
+
     //#endregion
     constructor(settings) {
         super(settings);
@@ -23,6 +26,9 @@ class HTML extends Base {
 
     get fileName() {
         return this.name + ".html";
+    }
+    get extensionName() {
+        return ".html";
     }
 
     get compiler() {

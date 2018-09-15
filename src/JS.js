@@ -9,6 +9,8 @@ class JS extends Base {
         return minifyJS();
     }
 
+
+
     //#endregion
     constructor(settings) {
         super(settings);
@@ -25,6 +27,9 @@ class JS extends Base {
     }
     get taskName() {
         return "js:" + this.name
+    }
+    get extensionName() {
+        return ".js";
     }
     //#endregion
 }

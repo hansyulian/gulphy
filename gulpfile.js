@@ -20,7 +20,11 @@ var test3 = gulphy.html({
     compiler: "handlebars",
     data: {
         text: "Hello Gulphy"
-    }
+    },
+    pipeline: [
+        "compile",
+        "changeExtension"
+    ]
 })
 gulphy.registerRun("default");
 gulphy.registerWatch("watch");

@@ -12,6 +12,7 @@ class CSS extends Base {
         }
     }
 
+
     static minify(context) {
         return minifyCSS();
     }
@@ -29,6 +30,10 @@ class CSS extends Base {
 
     get taskName() {
         return "css:" + this.name
+    }
+
+    get extensionName() {
+        return ".css";
     }
     //#endregion
 }
