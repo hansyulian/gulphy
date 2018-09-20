@@ -1,3 +1,7 @@
+0.1.6:
+- can change extension names
+- add gulp-template in base
+
 0.1.5:
 - adding changeExtension and changeName pipeline
 

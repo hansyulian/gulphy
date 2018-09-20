@@ -18,8 +18,8 @@ class JS extends Base {
 
     //#region getter
 
-    get fileName() {
-        return this.name + ".js";
+    get extensionName() {
+        return this.extension || ".js";
     }
 
     get compiler() {

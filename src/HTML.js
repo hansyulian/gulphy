@@ -24,11 +24,8 @@ class HTML extends Base {
 
     //#region getter
 
-    get fileName() {
-        return this.name + ".html";
-    }
     get extensionName() {
-        return ".html";
+        return this.extension || ".html";
     }
 
     get compiler() {

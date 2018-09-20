@@ -3,6 +3,7 @@ const concat = require("gulp-concat");
 const tasker = require("./utils/tasker");
 const plumber = require("gulp-plumber");
 const rename = require("gulp-rename");
+const template = require("gulp-template");
 
 class Base {
 
@@ -44,7 +45,10 @@ class Base {
 
     static get compilers() {
         return {
-
+            template: function (context) {
+                var data = context.settings.data || {};
+                return template(data);
+            }
         }
     }
 
@@ -70,7 +74,7 @@ class Base {
     }
 
     get fileName() {
-        return this.name || "default";
+        return this.name + this.extensionName;
     }
 
     get watchFiles() {
@@ -79,6 +83,14 @@ class Base {
 
     get name() {
         return this.settings.name || "default";
+    }
+
+    get extension() {
+        return this.settings.extension || "";
+    }
+
+    get extensionName() {
+        return this.extension;
     }
 
     get sourcePath() {
@@ -95,9 +107,6 @@ class Base {
 
     get pipeline() {
         return this.settings.pipeline || Base.defaultPipeline;
-    }
-    get extensionName() {
-        return null;
     }
 
     get gulpPipeline() {

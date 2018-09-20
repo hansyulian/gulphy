@@ -24,8 +24,8 @@ class CSS extends Base {
 
     //#region getter
 
-    get fileName() {
-        return this.name + ".css";
+    get extensionName() {
+        return this.extension || ".css";
     }
 
     get taskName() {

@@ -5,7 +5,11 @@ var test = new GulphyBase({
     name: "gulphyTest1",
     files: ["test1/**/*"],
     sourcePath: "tests",
-    destination: "./test-result"
+    destination: "./test-result",
+    compiler: "template",
+    data: {
+        text: "Hello Gulphy"
+    },
 });
 var test2 = new GulphyBase({
     name: "gulphyTest2",
