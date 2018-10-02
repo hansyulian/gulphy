@@ -4,6 +4,7 @@ const tasker = require("./utils/tasker");
 const plumber = require("gulp-plumber");
 const rename = require("gulp-rename");
 const template = require("gulp-template");
+const watch = require("gulp-watch");
 
 class Base {
 
@@ -109,28 +110,25 @@ class Base {
         return this.settings.pipeline || Base.defaultPipeline;
     }
 
-    get gulpPipeline() {
-        var pipeline = this.pipeline;
-        var pipes = this.constructor.pipes;
-        var gulpInstance = gulp.src(this.files, {
-            cwd: this.sourcePath
-        });
-        gulpInstance = gulpInstance.pipe(plumber());
-        for (var i in pipeline) {
-            var pipeName = pipeline[i];
-            var pipe = pipes[pipeName]
-            if (!pipe)
-                throw Error("Unknown process: %s", pipeName)
-            var process = pipe(this);
-            if (process) {
-                gulpInstance = gulpInstance.pipe(process);
-            }
-        }
-        gulpInstance = gulpInstance.pipe(gulp.dest(this.destination))
-
-        return gulpInstance;
+    get isIndividualWatch() {
+        return this.settings.individualWatch && true;
     }
 
+    get compiler() {
+        return this.settings.compiler || "none";
+    }
+
+    get taskInitiator() {
+        return gulp.src(this.files, {
+            cwd: this.sourcePath
+        });
+    }
+
+    get watchInitiator() {
+        return watch(this.files, {
+            cwd: this.sourcePath,
+        });
+    }
     //#endregion
 
     //#region methods
@@ -149,13 +147,19 @@ class Base {
     register(name) {
         var runName = "run:" + name;
         var watchName = "watch:" + name;
-        var run = gulp.task(runName, () => this.gulpPipeline);
-        var watchFiles = [];
-        watchFiles = this.files.concat(this.watchFiles);
-        var watch = gulp.task(watchName, () => gulp.watch(watchFiles, {
-            cwd: this.sourcePath
-        },
-            gulp.parallel([runName])));
+        var run = gulp.task(runName, () => this.generatePipeline(false));
+        var watch = null;
+        if (this.isIndividualWatch) {
+            var watchPipeline = this.generatePipeline(true);
+            watch = gulp.task(watchName, () => watchPipeline)
+        }
+        else {
+            var watchFiles = [];
+            watchFiles = this.files.concat(this.watchFiles);
+            watch = gulp.task(watchName, () => gulp.watch(watchFiles, {
+                cwd: this.sourcePath
+            }, gulp.parallel([runName])));
+        }
         tasker.runs.push({
             name: runName,
             instance: run
@@ -167,9 +171,32 @@ class Base {
         return this;
     }
 
-    get compiler() {
-        return this.settings.compiler || "none";
+
+    generatePipeline(isWatch) {
+        var pipeline = this.pipeline;
+        var pipes = this.constructor.pipes;
+
+        var gulpInstance = null;
+        if (!isWatch)
+            gulpInstance = this.taskInitiator;
+        else
+            gulpInstance = this.watchInitiator;
+        gulpInstance = gulpInstance.pipe(plumber());
+        for (var i in pipeline) {
+            var pipeName = pipeline[i];
+            var pipe = pipes[pipeName]
+            if (!pipe)
+                throw Error("Unknown process: %s", pipeName)
+            var process = pipe(this);
+            if (process) {
+                gulpInstance = gulpInstance.pipe(process);
+            }
+        }
+        gulpInstance = gulpInstance.pipe(gulp.dest(this.destination))
+
+        return gulpInstance;
     }
+
     //#endregion
 
 }

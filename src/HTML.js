@@ -1,6 +1,6 @@
 const Base = require("./Base");
 const handlebars = require("gulp-compile-handlebars");
-
+const minify = require("gulp-htmlmin");
 class HTML extends Base {
 
 
@@ -12,6 +12,11 @@ class HTML extends Base {
                 return handlebars(context.settings.data || {}, context.settings.handlebars || {})
             }
         }
+    }
+
+    static minify(context) {
+        var options = context.minifyOptions || {};
+        return minify(options);
     }
 
 

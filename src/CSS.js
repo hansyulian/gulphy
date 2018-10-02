@@ -1,5 +1,5 @@
 const Base = require("./Base");
-const minifyCSS = require("gulp-minify-css");
+const minifyCSS = require("gulp-uglifycss");
 const less = require("gulp-less");
 
 class CSS extends Base {
